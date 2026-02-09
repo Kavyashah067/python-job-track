@@ -27,8 +27,30 @@ def print_job_table(jobs):
         company, role, location, status = job
         print(f"{i:<4} {company:<15} {role:<20} {location:<15} {status}")
 
+def show_summary(all_jobs):
+    applied = 0
+    interview = 0
+    rejected = 0
+
+    for job in all_jobs[1:]:
+        status = job[3].lower()
+
+        if status == "applied":
+            applied += 1
+        elif status == "interview":
+            interview += 1
+        elif status == "rejected":
+            rejected += 1
+
+    print("\nSummary:")
+    print(f"Applied: {applied}")
+    print(f"Interview: {interview}")
+    print(f"Rejected: {rejected}")
+
 def show_menu():
-    print("\nJob Application Tracker")
+    print("\n" + "-"*30)
+    print("Job Application Tracker")
+    print("-"*30)
     print("1. Add job application")
     print("2. View all applications")
     print("3. Filter applications by status")
@@ -44,8 +66,7 @@ def load_jobs():
 def save_jobs(all_jobs):
     with open(DATA_FILE, mode="w", newline="") as file:
         writer = csv.writer(file)
-
-        # write header
+        
         writer.writerow(all_jobs[0])
 
         # write job rows
@@ -70,8 +91,9 @@ def view_jobs():
     if len(all_jobs) <= 1:
         print("No job applications found.")
         return
-        
+    
     print_job_table(all_jobs[1:])
+    show_summary(all_jobs)
 
 def filter_jobs_by_status():
     status_filter = input("Enter status to filter by (applied/interview/rejected): ").lower()
