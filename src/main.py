@@ -1,6 +1,9 @@
 import csv
 from tracker import load_jobs
 
+DATA_FILE = "data/jobs.csv"
+VALID_STATUSES = {"applied", "interview", "rejected"}
+
 def show_menu():
     print("\nJob Application Tracker")
     print("1. Add job application")
@@ -11,12 +14,12 @@ def show_menu():
     print("6. Exit")
     
 def load_jobs():
-    with open("data/jobs.csv", mode="r", newline="") as file:
+    with open(DATA_FILE, mode="r", newline="") as file:
         reader = csv.reader(file)
         return list(reader)
     
 def save_jobs(all_jobs):
-    with open("data/jobs.csv", mode="w", newline="") as file:
+    with open(DATA_FILE, mode="w", newline="") as file:
         writer = csv.writer(file)
 
         # write header
