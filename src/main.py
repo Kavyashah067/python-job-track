@@ -4,6 +4,20 @@ from tracker import load_jobs
 DATA_FILE = "data/jobs.csv"
 VALID_STATUSES = {"applied", "interview", "rejected"}
 
+def get_non_empty_input(prompt):
+    while True:
+        value = input(prompt).strip()
+        if value:
+            return value
+        print("Input cannot be empty. Please try again.")
+
+def get_valid_status():
+    while True:
+        status = input("Status (applied/interview/rejected): ").lower().strip()
+        if status in VALID_STATUSES:
+            return status
+        print(f"Invalid status. Choose from: {', '.join(VALID_STATUSES)}")
+
 def show_menu():
     print("\nJob Application Tracker")
     print("1. Add job application")
@@ -30,10 +44,10 @@ def save_jobs(all_jobs):
             writer.writerow(job)
 
 def add_job():
-    company = input("Company name: ")
-    role = input("Role: ")
-    location = input("Location: ")
-    status = input("Status (applied/interview/rejected): ")
+    company = get_non_empty_input("Company name: ")
+    role = get_non_empty_input("Role: ")
+    location = get_non_empty_input("Location: ")
+    status = get_valid_status()
 
     all_jobs = load_jobs()
     all_jobs.append([company, role, location, status])
