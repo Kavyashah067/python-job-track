@@ -18,6 +18,15 @@ def get_valid_status():
             return status
         print(f"Invalid status. Choose from: {', '.join(VALID_STATUSES)}")
 
+def print_job_table(jobs):
+    print("\nYour Job Applications:\n")
+    print(f"{'No.':<4} {'Company':<15} {'Role':<20} {'Location':<15} {'Status'}")
+    print("-" * 65)
+
+    for i, job in enumerate(jobs, start=1):
+        company, role, location, status = job
+        print(f"{i:<4} {company:<15} {role:<20} {location:<15} {status}")
+
 def show_menu():
     print("\nJob Application Tracker")
     print("1. Add job application")
@@ -57,14 +66,12 @@ def add_job():
 
 def view_jobs():
     all_jobs = load_jobs()
+
     if len(all_jobs) <= 1:
         print("No job applications found.")
         return
         
-    print ("\nYour Job Applications:\n")
-    for i, row in enumerate(all_jobs[1:], start=1):
-        company, role, location, status = row
-        print(f"{i}. {company} | {role} | {location} | {status}")
+    print_job_table(all_jobs[1:])
 
 def filter_jobs_by_status():
     status_filter = input("Enter status to filter by (applied/interview/rejected): ").lower()
@@ -83,10 +90,7 @@ def filter_jobs_by_status():
         print(f"No applications found with status '{status_filter}'.")
         return
         
-    print(f"\n Applications with status '{status_filter}':\n")
-    for i, row in enumerate(filtered_jobs, start=1):
-        company, role, location, status = row
-        print(f"{i}. {company} | {role} | {location} | {status}")
+    print_job_table(filtered_jobs)
 
 def update_job_status():
     all_jobs = load_jobs()
@@ -95,9 +99,7 @@ def update_job_status():
        print("No job applications to update.")
        return
     
-    print("Job Applications:\n")
-    for i, job in enumerate(all_jobs[1:], start=1):
-        print(f"{i}. {job[0]} | {job[1]} | {job[2]} | {job[3]}")
+    print_job_table(all_jobs[1:])
 
     try:
         choice = int(input("\nEnter job number to update: "))
@@ -123,9 +125,7 @@ def delete_job():
         print("No job applications to delete.")
         return
     
-    print("\nJob Applications:\n")
-    for i, job in enumerate(all_jobs[1:], start=1):
-        print(f"{i}. {job[0]} | {job[1]} | {job[2]} | {job[3]}")
+    print_job_table(all_jobs[1:])
 
     try:
         choice = int(input("\nEnter job number to delete: "))
@@ -141,7 +141,7 @@ def delete_job():
 
     save_jobs(all_jobs)
 
-    print(f"🗑️ Deleted job: {deleted_job[0]} | {deleted_job[1]}")
+    print(f"Deleted job: {deleted_job[0]} | {deleted_job[1]}")
 
 def main():
     applications = load_jobs()
